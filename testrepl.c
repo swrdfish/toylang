@@ -223,7 +223,8 @@ double eval(struct ast *a) {
         case 'N': v = ((struct symref *)a)->s->value; break;
 
         /* assignment */
-        case '=': v = ((struct symref *)a)->s->value; break;
+        case '=': v = ((struct symasgn *)a)->s->value =
+            eval(((struct symasgn *)a)->v) ; break;
 
         /* expressions */
         case '+': v = eval(a->l) + eval(a->r); break;
@@ -333,7 +334,7 @@ static double calluser(struct ufncall *f) {
     /* prepare to save them */
     oldval = (double *) malloc(nargs * sizeof(double));
     newval = (double *) malloc(nargs * sizeof(double));
-    if(!oldval || newval) {
+    if(!oldval || !newval) {
         yyerror("Out of space in %s", fn->name); return 0.0;
     }
 

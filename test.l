@@ -47,7 +47,7 @@ EXP ([Ee][-+]?[0-9]+)
 [a-zA-Z][a-zA-Z0-9]*    { yylval.s = lookup(yytext); return NAME; }
 
 [0-9]+"."[0-9]*{EXP}? |
-"."?[0-9]+{EXP}?        { yylval.d = atof(yytext); printf("NUMBER %f\n", atof(yytext)); return NUMBER; }
+"."?[0-9]+{EXP}?        { yylval.d = atof(yytext); return NUMBER; }
 
  /* comments */
 "//".*
@@ -55,7 +55,7 @@ EXP ([Ee][-+]?[0-9]+)
 
 \\\n                    { printf("c> "); }  /* ignore line continuation */
 
-\n                      { printf("EOL"); return EOL; }
+\n                      { return EOL; }
 
 .                       { printf("Mystery character %c\n", *yytext); }
 
