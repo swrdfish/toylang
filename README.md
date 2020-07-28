@@ -1,14 +1,16 @@
 ## Demo Lexer and Parser
 Implementation the calculator from the book: [Flex and Bison](https://www.amazon.in/Flex-Bison-John-R-Levine/dp/8184048165/ref=sr_1_1?dchild=1&keywords=flex+and+bison&qid=1595940764&sr=8-1)
 
+#### Pre-requisites
+Make sure you have `flex`, `bison` and `graphviz` installed before you build.
 
-**Build and run**
+#### Build and run
 ```bash
 ./build.sh
 ./a.out
 ```
 
-**Demo program:**
+#### Demo program:
 ```
 1 + 2 * 4 / 5 
 
