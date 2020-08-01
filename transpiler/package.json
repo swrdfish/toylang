@@ -1,0 +1,18 @@
+{
+  "name": "transpiler",
+  "version": "1.0.0",
+  "description": "ta demo transpiler written in java script",
+  "main": "./lib/rpn.js",
+  "bin": {
+    "rpn.js": "./bin/rpn.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "jison": "^0.4.18",
+    "source-map": "^0.7.3"
+  }
+}
