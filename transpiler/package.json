@@ -7,7 +7,7 @@
     "rpn.js": "./bin/rpn.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "jison lib/rpn/bnf.jison lib/rpn/lex.jisonlex -o lib/rpn/parser.js"
   },
   "author": "",
   "license": "ISC",

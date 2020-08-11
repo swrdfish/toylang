@@ -1,12 +1,13 @@
 var jison = require("jison");
 var sourceMap = require("source-map");
-var lex = require("./rpn/lex").lex;
-var bnf = require("./rpn/bnf").bnf;
+// var lex = require("./rpn/lex").lex;
+// var bnf = require("./rpn/bnf").bnf;
 
-var parser = new jison.Parser({
-  lex: lex,
-  bnf: bnf
-});
+// var parser = new jison.Parser({
+//   lex: lex,
+//   bnf: bnf
+// });
+var parser = require("./rpn/parser").parser;
 
 parser.yy = require("./rpn/ast");
 
@@ -44,9 +45,9 @@ exports.compile = function (input, data) {
     var preamble = getPreamble();
   
     var result = new sourceMap.SourceNode(null, null, null, preamble);
-    result.add(expressions.map(function (exp) {
-      return exp.compile(data);
-    }));
+    // result.add(expressions.map(function (exp) {
+    //   return exp.compile(data);
+    // }));
   
     return result;
 };

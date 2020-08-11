@@ -18,23 +18,27 @@ EXP ([Ee][-+]?[0-9]+)
 "," |
 ";" |
 "(" |
-")"     { return yytext[0]; }
+")" |
+"{" |
+"}" |
+"[" |
+"]" |
+"!" { return yytext[0]; }
 
  /* comparion ops, all are a CMP token */
 ">"     { yylval.fn = 1; return CMP; }
 "<"     { yylval.fn = 2; return CMP; }
-"<>"    { yylval.fn = 3; return CMP; }
+"!="    { yylval.fn = 3; return CMP; }
 "=="    { yylval.fn = 4; return CMP; }
 ">="    { yylval.fn = 5; return CMP; }
 "<="    { yylval.fn = 6; return CMP; }
 
  /* keywords */
 "if"    { return IF; }
-"then"  { return THEN; }
 "else"  { return ELSE; }
 "while" { return WHILE; }
-"do"    { return DO; }
 "let"   { return LET; }
+"for"   { return FOR; }
 
  /* built-in functions */
 "sqrt"  { yylval.fn = B_sqrt; return FUNC; }
@@ -49,6 +53,9 @@ EXP ([Ee][-+]?[0-9]+)
 [0-9]+"."[0-9]*{EXP}? |
 "."?[0-9]+{EXP}?        { yylval.d = atof(yytext); return NUMBER; }
 
+ /* string literal */
+\"(\\.|[^"\\])*\"       { yylval.str = yytext; return STRING; }
+
  /* comments */
 "//".*
 [ \t]   /* ignore whitespace */
@@ -58,5 +65,6 @@ EXP ([Ee][-+]?[0-9]+)
 \n                      { return EOL; }
 
 .                       { printf("Mystery character %c\n", *yytext); }
+
 
 %%

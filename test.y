@@ -21,7 +21,8 @@ void yyerror(const char* fmt, ...) {
     double d;
     struct symbol *s;                               /* which symbol */
     struct symlist *sl;
-    int fn;                                         /* which function */
+    int fn;                                        /* which function */
+    char ** str;
 }
 
 /* declare tokens */
@@ -29,7 +30,7 @@ void yyerror(const char* fmt, ...) {
 %token <s> NAME
 %token <fn> FUNC 
 %token EOL
-%token IF THEN ELSE WHILE DO LET
+%token IF ELSE WHILE LET FOR
 
 %nonassoc <fn> CMP
 %right '='
@@ -53,22 +54,35 @@ calclist: /* nothing */
     | calclist error EOL { printf("> "); yyerrok; }
     ;
 
-stmt: IF exp THEN list              { $$ = newflow('I', $2, $4, NULL); }
-    | IF exp THEN list ELSE list    { $$ = newflow('I', $2, $4, $6); }
-    | WHILE exp DO list             { $$ = newflow('W', $2, $4, NULL); }
+stmt: IF '(' exp ')' block                      { $$ = newflow('I', $2, $4, NULL); }
+    | IF '('exp ')' block ELSE block            { $$ = newflow('I', $2, $4, $6); }
+    | WHILE '(' exp ')'block                    { $$ = newflow('W', $2, $4, NULL); }
+    | FOR '(' exp ';' exp ';' exp ')' block     { $$ = newflow('F', $3, $5, $7); }
     | exp
     ;
+
+block: '{' list '}'
 
 list: /* nothing */                 { $$ = NULL; }
     | stmt ';' list                 { if ($3 == NULL ) {
                                         $$ = $1;
-                                    
                                       }
                                       else {
-                                     $$ = newast('L', $1, $3);
+                                        $$ = newast('L', $1, $3);
                                       }
                                     }
+    | stmt ';' EOL list             { if ($4 == NULL ) {
+                                        $$ = $1;
+                                      }
+                                      else {
+                                        $$ = newast('L', $1, $4);
+                                      }
+                                    }
+    | block
+    | EOL
     ;
+
+
 
 exp: exp CMP exp                    { $$ = newcmp($2, $1, $3); }
     | exp '+' exp                   { $$ = newast('+', $1,$3); }
